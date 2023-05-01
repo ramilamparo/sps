@@ -1,0 +1,27 @@
+.root {
+	border-collapse: collapse;
+	width: 100%;
+
+	& td,
+	& th {
+		padding: $spacing;
+		padding-left: $spacing * 5;
+	}
+
+	th {
+		background-color: $color-background;
+		text-align: start;
+		color: $color-text-muted;
+	}
+
+	tr {
+		background-color: $color-item-bg;
+		transition: all 200ms linear;
+		&:nth-child(odd) {
+			background-color: $color-item-bg-alt;
+		}
+		&:hover {
+			background-color: $color-item-bg-active;
+		}
+	}
+}

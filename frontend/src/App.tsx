@@ -5,6 +5,7 @@ import { Paper } from "./components/Paper/Paper";
 import styles from "./App.module.scss";
 import { RangeInput } from "./components/RangeInput/RangeInput";
 import { NumberInput } from "./components/NumberInput/NumberInput";
+import { RankingTable } from "./components/Table/RankingTable";
 
 function App() {
 	const [rangeValue, setRangeValue] = useState(1);
@@ -31,6 +32,7 @@ function App() {
 						onChange={(value) => setRangeValue(value)}
 					/>
 				</Paper>
+				<RankingTable />
 			</Container>
 		</>
 	);
