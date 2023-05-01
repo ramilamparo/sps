@@ -1,0 +1,36 @@
+.root {
+	display: inline-flex;
+	align-items: center;
+}
+
+.input {
+	height: $input-height;
+	border-radius: $border-radius;
+	background-color: $color-background;
+	border: 1px solid $color-border;
+	margin: 0 $spacing;
+	padding-left: $spacing;
+}
+
+.button {
+	border: 1px solid $color-border;
+	border-radius: $border-radius;
+	padding: 0;
+	height: 2rem;
+	width: 2rem;
+	background-color: $color-background;
+	position: relative;
+	transition: all 200ms linear;
+
+	&:hover {
+		background-color: $color-item-bg-active;
+	}
+
+	& svg {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 2rem;
+	}
+}

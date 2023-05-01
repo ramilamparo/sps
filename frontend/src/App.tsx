@@ -4,9 +4,11 @@ import { Container } from "./components/Container/Container";
 import { Paper } from "./components/Paper/Paper";
 import styles from "./App.module.scss";
 import { RangeInput } from "./components/RangeInput/RangeInput";
+import { NumberInput } from "./components/NumberInput/NumberInput";
 
 function App() {
-	const [value, setValue] = useState(1);
+	const [rangeValue, setRangeValue] = useState(1);
+	const [numberValue, setNumberValue] = useState(1);
 
 	return (
 		<>
@@ -15,16 +17,18 @@ function App() {
 					<Button style={{ minWidth: "500px" }}>Start</Button>
 				</Paper>
 				<Paper>
-					<Button style={{ minWidth: "500px" }}>Start</Button>
+					<NumberInput
+						value={numberValue}
+						onChange={setNumberValue}
+					/>
 				</Paper>
 				<Paper variant="gradient">
-					<Button style={{ minWidth: "500px" }}>Start</Button>
 					<RangeInput
 						step={1}
 						min={1}
 						max={5}
-						value={value}
-						onChange={(value) => setValue(value)}
+						value={rangeValue}
+						onChange={(value) => setRangeValue(value)}
 					/>
 				</Paper>
 			</Container>
