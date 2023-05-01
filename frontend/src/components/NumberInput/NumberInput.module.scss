@@ -9,7 +9,9 @@
 	background-color: $color-background;
 	border: 1px solid $color-border;
 	margin: 0 $spacing;
-	padding-left: $spacing;
+	font-size: $font-size * 1.2;
+	text-align: center;
+	flex-grow: 1;
 }
 
 .button {
@@ -18,7 +20,7 @@
 	padding: 0;
 	height: 2rem;
 	width: 2rem;
-	background-color: $color-background;
+	background-color: $color-item-bg;
 	position: relative;
 	transition: all 200ms linear;
 
