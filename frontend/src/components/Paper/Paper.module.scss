@@ -1,11 +1,11 @@
 .root {
-    padding: $spacing;
+	padding: $spacer;
 }
 
 .gradient {
-    background: linear-gradient(to right, transparent, $color-paper-background);
+	background: linear-gradient(to right, transparent, $color-paper-background);
 }
 
 .solid {
-    background-color: $color-paper-background;
+	background-color: $color-paper-background;
 }

@@ -1,9 +1,12 @@
-$color-primary: #e3387e;
-$color-secondary: #fd5f43;
+@import "bootstrap/scss/bootstrap.scss";
+
+$primary: #e3387e;
+$secondary: #fd5f43;
 $color-text-default: #fff;
 $color-text-muted: #7d838f;
-$color-background: #14181e;
+$body-bg: #14181e;
 $color-border: #505562;
+$spacer: 0.5rem;
 
 $color-paper-background: #1f2531;
 
@@ -13,7 +16,4 @@ $color-item-bg-active: #3e4556;
 
 $border-radius: 6px;
 
-$input-height: 1.8rem;
-
-$spacing: 0.5rem;
 $font-size: 16px;

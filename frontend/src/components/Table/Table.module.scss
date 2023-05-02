@@ -4,12 +4,12 @@
 
 	& td,
 	& th {
-		padding: $spacing;
-		padding-left: $spacing * 5;
+		padding: $spacer;
+		padding-left: $spacer * 5;
 	}
 
 	th {
-		background-color: $color-background;
+		background-color: $body-bg;
 		text-align: start;
 		color: $color-text-muted;
 	}

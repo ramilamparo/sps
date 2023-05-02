@@ -38,8 +38,8 @@ export const Table = <T,>({ columns, data, keyExtract }: TableProps<T>) => {
 
 	return (
 		<table className={styles.root}>
-			{headers}
-			{body}
+			<thead>{headers}</thead>
+			<tbody>{body}</tbody>
 		</table>
 	);
 };

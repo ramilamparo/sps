@@ -38,6 +38,7 @@ export const RangeInput = ({
 				min={min}
 				max={max}
 				step={step}
+				value={value}
 				onChange={(e) => onChange?.(Number(e.target.value))}
 			/>
 			<div className={styles.labelContainer}>{labels}</div>

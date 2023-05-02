@@ -1,0 +1,17 @@
+.root {
+	position: relative;
+
+	// #marker-circle {
+	// circle {
+	// 	filter: drop-shadow(5px 5px 5px #feb623);
+	// }
+	// }
+}
+
+.text {
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: $font-size * 4;
+}

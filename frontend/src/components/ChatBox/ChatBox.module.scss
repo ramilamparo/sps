@@ -1,11 +1,10 @@
 .root {
-	height: 300px;
 	display: flex;
 	flex-direction: column;
 }
 
 .chatHistoryContainer {
-	padding: $spacing;
+	padding: $spacer;
 	overflow: auto;
 	flex-grow: 1;
 }
@@ -13,23 +12,23 @@
 .chatHistoryMessage {
 	background-color: $color-item-bg-active;
 	display: inline-flex;
-	padding: $spacing * 0.4;
+	padding: $spacer * 0.4;
 	font-size: $font-size * 0.8;
 	align-items: center;
 	border-radius: $border-radius;
-	margin-left: $spacing;
+	margin-left: $spacer;
 }
 
 .chatHistoryItem {
 	display: flex;
 	&:not(:last-child) {
-		margin-bottom: $spacing * 2;
+		margin-bottom: $spacer * 2;
 	}
 }
 
 .messageBox {
 	background-color: $color-paper-background;
-	padding: $spacing * 2;
+	padding: $spacer * 2;
 	display: flex;
 }
 
@@ -38,8 +37,7 @@
 	background-color: $color-item-bg;
 	border-radius: $border-radius;
 	border: none;
-	height: $input-height;
-	margin-right: $spacing * 2;
+	margin-right: $spacer * 2;
 	flex-grow: 1;
 }
 

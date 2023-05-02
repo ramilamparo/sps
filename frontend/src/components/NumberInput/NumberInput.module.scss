@@ -1,17 +1,17 @@
 .root {
-	display: inline-flex;
+	display: flex;
 	align-items: center;
 }
 
 .input {
-	height: $input-height;
 	border-radius: $border-radius;
-	background-color: $color-background;
+	background-color: $body-bg;
 	border: 1px solid $color-border;
-	margin: 0 $spacing;
+	margin: 0 $spacer;
 	font-size: $font-size * 1.2;
 	text-align: center;
 	flex-grow: 1;
+	width: 0;
 }
 
 .button {
@@ -23,6 +23,7 @@
 	background-color: $color-item-bg;
 	position: relative;
 	transition: all 200ms linear;
+	flex-shrink: 0;
 
 	&:hover {
 		background-color: $color-item-bg-active;
