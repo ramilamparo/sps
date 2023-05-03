@@ -81,7 +81,7 @@ export const Chart = ({ value, speed = 1 }: ChartProps) => {
 									refX="2"
 									refY="2.5"
 									orient="auto-start-reverse"
-									stroke-width="1"
+									strokeWidth="1"
 									fill="url(#Gradient1)"
 								>
 									<circle r="3" cx="2.5" cy="2.5"></circle>
