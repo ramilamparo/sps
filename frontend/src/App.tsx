@@ -19,7 +19,7 @@ import clsx from "clsx";
 function App() {
 	const [rangeValue, setRangeValue] = useState(1);
 	const [numberValue, setNumberValue] = useState(1);
-	const [points, setPoints] = useState(1000);
+	const [points] = useState(1000);
 	const [username, setUsername] = useState("");
 	const usernameRef = useRef<HTMLInputElement>(null);
 
