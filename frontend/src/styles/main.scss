@@ -20,8 +20,13 @@ $border-radius: 6px;
 $font-size: 16px;
 
 .form-control {
-	background-color: $body-bg;
-	:focus {
-		background-color: $body-bg;
+	color: $color-text-default;
+	background-color: $color-item-bg;
+	border-radius: $border-radius;
+	border: 1px solid $color-border;
+
+	&:focus {
+		background-color: $color-item-bg;
+		color: $color-text-default;
 	}
 }
