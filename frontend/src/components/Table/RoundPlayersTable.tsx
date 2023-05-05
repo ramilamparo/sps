@@ -54,7 +54,6 @@ export const RoundPlayersTable = () => {
 				return bet;
 			}
 			if (winner && bet.bet > 0 && bet.guess <= answer) {
-				console.log(bet);
 				const distanceA = answer - bet.guess;
 				const distanceB = answer - winner.guess;
 				if (distanceA < distanceB) {
@@ -105,7 +104,7 @@ const COLUMNS: TableColumns<ColumnData>[] = [
 	{
 		field: "multiplier",
 		label: "Mul.",
-		render: (data) => <>{data.guess || "-"}</>,
+		render: (data) => <>{data.guess ?? "-"}</>,
 	},
 ];
 

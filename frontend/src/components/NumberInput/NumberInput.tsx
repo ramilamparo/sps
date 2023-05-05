@@ -8,6 +8,10 @@ export interface NumberInputProps {
 	onChange?: (value: number) => void;
 	className?: string;
 	disabled?: boolean;
+	allowFloatingPoint?: boolean;
+	step?: number;
+	min?: number;
+	max?: number;
 }
 
 export const NumberInput = ({
@@ -15,32 +19,59 @@ export const NumberInput = ({
 	value,
 	onChange,
 	disabled,
+	allowFloatingPoint,
+	step = 1,
+	min,
+	max,
 }: NumberInputProps) => {
 	const [displayedValue, setDisplayedValue] = useState(value || "");
 
+	const clampNumber = useCallback(
+		(number: number) => {
+			if (min !== undefined && number < min) {
+				return min;
+			}
+			if (max !== undefined && number > max) {
+				return max;
+			}
+			return number;
+		},
+		[max, min]
+	);
+
 	const increment = useCallback(() => {
 		if (typeof value === "number") {
-			const newValue = value + 1;
+			const newValue = clampNumber(value + 1);
 			onChange?.(newValue);
 			setDisplayedValue(newValue);
 		}
-	}, [onChange, value]);
+	}, [clampNumber, onChange, value]);
 
 	const decrement = useCallback(() => {
 		if (typeof value === "number") {
-			const newValue = value - 1;
+			const newValue = clampNumber(value - 1);
 			onChange?.(newValue);
 			setDisplayedValue(newValue);
 		}
-	}, [onChange, value]);
+	}, [clampNumber, onChange, value]);
 
-	const handleChange = useCallback(
-		(e: ChangeEvent<HTMLInputElement>) => {
-			setDisplayedValue(e.target.value);
-			onChange?.(Number(e.target.value));
-		},
-		[onChange]
-	);
+	const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+		setDisplayedValue(e.target.value);
+	}, []);
+
+	const handleBlur = useCallback(() => {
+		const isNumber = /^-?\d+(\.\d+)?$/.test(String(displayedValue));
+		const parsedValue = parseFloat(String(displayedValue));
+		if (isNumber && !isNaN(parsedValue)) {
+			const newValue = clampNumber(
+				allowFloatingPoint ? parsedValue : Math.round(parsedValue)
+			);
+			setDisplayedValue(newValue);
+			onChange?.(newValue);
+		} else {
+			setDisplayedValue(clampNumber(value ?? 0));
+		}
+	}, [allowFloatingPoint, clampNumber, displayedValue, onChange, value]);
 
 	useEffect(() => {
 		if (typeof value === "number") {
@@ -62,19 +93,10 @@ export const NumberInput = ({
 				className={styles.input}
 				type="text"
 				inputMode="numeric"
-				step="0.1"
+				step={step}
 				value={displayedValue}
 				onChange={handleChange}
-				onBlur={() => {
-					if (typeof value === "number") {
-						const parsedValue = parseFloat(String(displayedValue));
-						const newValue = isNaN(parsedValue)
-							? value
-							: parsedValue;
-						setDisplayedValue(newValue);
-						onChange?.(newValue);
-					}
-				}}
+				onBlur={handleBlur}
 			/>
 			<button
 				disabled={disabled}

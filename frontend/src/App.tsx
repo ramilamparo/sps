@@ -10,9 +10,11 @@ import { Chart } from "./components/Chart/Chart";
 import {
 	MdAccessTime,
 	MdEmojiEvents,
+	MdForum,
 	MdMilitaryTech,
 	MdPerson,
 	MdSpeed,
+	MdWorkspacePremium,
 } from "react-icons/md";
 import clsx from "clsx";
 import { betRound, createRound } from "./api/round";
@@ -73,7 +75,7 @@ function App() {
 
 	return (
 		<>
-			<div className="mt-5 container" data-bs-theme="dark">
+			<div className="my-5 container" data-bs-theme="dark">
 				<div className="row g-3 mb-3">
 					<div className="col-xs-12 col-md-4">
 						<div className="d-flex gap-3">
@@ -89,6 +91,8 @@ function App() {
 									disabled={!currentRound}
 									value={bet}
 									onChange={(e) => dispatch(setBet(e))}
+									min={0}
+									max={player?.RoundPlayer?.points}
 								/>
 							</Paper>
 							<Paper
@@ -103,6 +107,9 @@ function App() {
 									disabled={!currentRound}
 									value={guess}
 									onChange={(e) => dispatch(setGuess(e))}
+									min={0}
+									max={10}
+									allowFloatingPoint
 								/>
 							</Paper>
 						</div>
@@ -226,10 +233,24 @@ function App() {
 				</div>
 				<div className="row g-3">
 					<div className="col-xs-12 col-md-6">
+						<div className="fs-5">
+							<span className="fs-3 me-2">
+								<MdWorkspacePremium />
+							</span>
+							Rankings
+						</div>
 						<RankingTable />
 					</div>
 					<div className="col-xs-12 col-md-6">
-						<ChatBox className="h-100" />
+						<div className="d-flex flex-column h-100">
+							<div className="fs-5">
+								<span className="fs-3 me-2">
+									<MdForum />
+								</span>
+								Chat
+							</div>
+							<ChatBox className="flex-grow-1" />
+						</div>
 					</div>
 				</div>
 			</div>
