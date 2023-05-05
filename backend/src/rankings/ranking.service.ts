@@ -19,7 +19,7 @@ export class RankingService {
         'username',
         [
           literal(
-            `(SELECT MAX(points) FROM roundplayers WHERE roundplayers.playerId = Player.id)`,
+            `(SELECT MAX(points) FROM RoundPlayers WHERE RoundPlayers.player_id = Player.id)`,
           ),
           'score',
         ],
