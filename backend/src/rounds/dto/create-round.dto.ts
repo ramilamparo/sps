@@ -1,3 +1,3 @@
 export class CreateRoundDto {
-  usernames: string[];
+  players: string[];
 }

@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { RoundModule } from './rounds/round.module';
+import { RankingModule } from './rankings/ranking.module';
 
 @Module({
-  imports: [RoundModule],
+  imports: [RoundModule, RankingModule],
   controllers: [],
   providers: [],
 })

@@ -16,7 +16,7 @@ export const databaseProviders = [
         database: 'sps',
       });
       sequelize.addModels([Round, Player, RoundPlayer]);
-      await sequelize.sync();
+      await sequelize.sync({ force: true });
       return sequelize;
     },
   },
