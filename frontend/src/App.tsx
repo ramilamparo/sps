@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { Button } from "./components/Button/Button";
 import { Paper } from "./components/Paper/Paper";
 import styles from "./App.module.scss";
@@ -15,13 +15,61 @@ import {
 	MdSpeed,
 } from "react-icons/md";
 import clsx from "clsx";
+import { betRound, createRound } from "./api/round";
+import { BOTS } from "./config/env";
+import { useAppDispatch, useAppSelector } from "./redux";
+import {
+	setAnswer,
+	setBet,
+	setGuess,
+	setRound,
+	setRoundBets,
+	setSpeed,
+	setUsername,
+} from "./redux/round";
+import { BotHelper } from "./utils/BotHelper";
+import { RoundPlayersTable } from "./components/Table/RoundPlayersTable";
 
 function App() {
-	const [rangeValue, setRangeValue] = useState(1);
-	const [numberValue, setNumberValue] = useState(1);
-	const [points] = useState(1000);
-	const [username, setUsername] = useState("");
-	const usernameRef = useRef<HTMLInputElement>(null);
+	const dispatch = useAppDispatch();
+	const { answer, bet, currentRound, guess, speed, username } =
+		useAppSelector((state) => state.round);
+
+	const player = useMemo(() => {
+		return currentRound?.players.find(
+			(player) => player.username === username
+		);
+	}, [currentRound?.players, username]);
+
+	const handleInitializeRound = useCallback(async () => {
+		if (username) {
+			const { data } = await createRound([username, ...BOTS]);
+			dispatch(setRound(data));
+		}
+	}, [dispatch, username]);
+
+	const handleStartRound = useCallback(async () => {
+		if (currentRound) {
+			const bets = currentRound.players.map((player) => {
+				if (player.username === username) {
+					return {
+						bet: bet,
+						guess,
+						player: player.username,
+					};
+				}
+				return {
+					bet: BotHelper.generateBet(player.RoundPlayer.points),
+					guess: BotHelper.generateGuess(),
+					player: player.username,
+				};
+			});
+			const { data } = await betRound(currentRound.id, bets);
+			dispatch(setRoundBets(bets));
+			dispatch(setRound(data.round));
+			dispatch(setAnswer(data.number));
+		}
+	}, [bet, dispatch, guess, currentRound, username]);
 
 	return (
 		<>
@@ -38,8 +86,9 @@ function App() {
 							>
 								<label>Points</label>
 								<NumberInput
-									value={numberValue}
-									onChange={setNumberValue}
+									disabled={!currentRound}
+									value={bet}
+									onChange={(e) => dispatch(setBet(e))}
 								/>
 							</Paper>
 							<Paper
@@ -51,8 +100,9 @@ function App() {
 							>
 								<label>Multiplier</label>
 								<NumberInput
-									value={numberValue}
-									onChange={setNumberValue}
+									disabled={!currentRound}
+									value={guess}
+									onChange={(e) => dispatch(setGuess(e))}
 								/>
 							</Paper>
 						</div>
@@ -67,7 +117,7 @@ function App() {
 									<MdMilitaryTech />
 								</span>
 								<span className={styles.text}>
-									{username ? points : null}
+									{player ? player.RoundPlayer.points : null}
 								</span>
 							</Paper>
 							<Paper
@@ -77,7 +127,9 @@ function App() {
 								<span className={styles.icon}>
 									<MdPerson />
 								</span>
-								<span className={styles.text}>{username}</span>
+								<span className={styles.text}>
+									{player?.username}
+								</span>
 							</Paper>
 							<Paper
 								variant="gradient"
@@ -93,7 +145,7 @@ function App() {
 				</div>
 				<div className="row g-3 mb-3">
 					<div className="col-xs-12 col-md-4">
-						{!username ? (
+						{!currentRound ? (
 							<Paper
 								variant="solid"
 								className="d-flex flex-column justify-content-between align-items-center p-4"
@@ -109,15 +161,15 @@ function App() {
 									</p>
 									<input
 										className="form-control mb-3"
-										ref={usernameRef}
+										onChange={(e) =>
+											dispatch(
+												setUsername(e.target.value)
+											)
+										}
 									></input>
 									<Button
 										className="mb-3 w-100"
-										onClick={() =>
-											setUsername(
-												usernameRef.current?.value || ""
-											)
-										}
+										onClick={handleInitializeRound}
 									>
 										Accept
 									</Button>
@@ -125,7 +177,12 @@ function App() {
 							</Paper>
 						) : (
 							<div className="d-flex flex-column gap-3">
-								<Button className="w-100">Start</Button>
+								<Button
+									className="w-100"
+									onClick={handleStartRound}
+								>
+									Start
+								</Button>
 								<div>
 									<div className="fs-5">
 										<span className="fs-3 me-2">
@@ -133,7 +190,7 @@ function App() {
 										</span>
 										Current Round
 									</div>
-									<RankingTable />
+									<RoundPlayersTable />
 								</div>
 								<div>
 									<div className="fs-5">
@@ -147,9 +204,9 @@ function App() {
 											step={1}
 											min={1}
 											max={5}
-											value={rangeValue}
+											value={speed}
 											onChange={(value) =>
-												setRangeValue(value)
+												dispatch(setSpeed(value))
 											}
 										/>
 									</Paper>
@@ -159,7 +216,11 @@ function App() {
 					</div>
 					<div className="col-xs-12 col-md-8">
 						<Paper variant="solid" style={{ height: "500px" }}>
-							<Chart value={6} speed={100} />
+							<Chart
+								key={answer}
+								value={answer}
+								speed={speed * 100}
+							/>
 						</Paper>
 					</div>
 				</div>

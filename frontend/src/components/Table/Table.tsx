@@ -1,4 +1,5 @@
 import { ReactNode, useMemo } from "react";
+import clsx from "clsx";
 import styles from "./Table.module.scss";
 
 export interface TableColumns<T> {
@@ -11,9 +12,17 @@ export interface TableProps<T> {
 	columns: TableColumns<T>[];
 	data: T[];
 	keyExtract: (data: T, index: number) => string | number;
+	classes?: {
+		row?: (data: T, index: number) => string;
+	};
 }
 
-export const Table = <T,>({ columns, data, keyExtract }: TableProps<T>) => {
+export const Table = <T,>({
+	columns,
+	data,
+	keyExtract,
+	classes,
+}: TableProps<T>) => {
 	const headers = useMemo(() => {
 		return (
 			<tr>
@@ -27,14 +36,17 @@ export const Table = <T,>({ columns, data, keyExtract }: TableProps<T>) => {
 	const body = useMemo(() => {
 		return data.map((data, i) => {
 			return (
-				<tr key={keyExtract(data, i)}>
+				<tr
+					key={keyExtract(data, i)}
+					className={clsx(classes?.row?.(data, i))}
+				>
 					{columns.map((col, i) => (
 						<td key={i}>{col.render(data)}</td>
 					))}
 				</tr>
 			);
 		});
-	}, [columns, data, keyExtract]);
+	}, [classes, columns, data, keyExtract]);
 
 	return (
 		<table className={styles.root}>

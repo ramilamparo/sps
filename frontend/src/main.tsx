@@ -1,11 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import "./styles/global.scss";
+import { Provider } from "react-redux";
 import "@fontsource/roboto";
+import { store } from "./redux/index.ts";
+import "./styles/global.scss";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
-		<App />
+		<Provider store={store}>
+			<App />
+		</Provider>
 	</React.StrictMode>
 );
