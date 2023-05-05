@@ -1,22 +1,40 @@
-import { useMemo } from "react";
-import { FAKE_RANKING, RankingModel } from "../../models/RankingModel";
+import { useEffect, useMemo, useState } from "react";
+import { RankingModel } from "../../models/RankingModel";
 import { BasePaper } from "../Paper/BasePaper";
 import { Table, TableColumns } from "./Table";
+import { useAppSelector } from "../../redux";
+import { useDebounce } from "../../hooks/useDebounce";
+import { PlayerModel } from "../../models/PlayerModel";
+import { getRankings } from "../../api/ranking";
 
 export const RankingTable = () => {
+	const currentRound = useAppSelector((state) => state.round.currentRound);
+	const debouncedCurrentRound = useDebounce(currentRound, 500);
+	const [rankings, setRankings] = useState<PlayerModel[]>([]);
+
 	const paddedRanking = useMemo(() => {
-		const rankings = [...FAKE_RANKING];
+		const paddedRanking: RankingModel[] = rankings.map((ranking, i) => {
+			return {
+				name: ranking.username,
+				rank: i + 1,
+				score: ranking.score,
+			};
+		});
 		const MIN_LENGTH = 5;
 
 		for (let i = rankings.length; i < MIN_LENGTH; i++) {
-			rankings.push({
+			paddedRanking.push({
 				name: "-",
 				rank: 0,
 				score: 0,
 			});
 		}
-		return rankings;
-	}, []);
+		return paddedRanking;
+	}, [rankings]);
+
+	useEffect(() => {
+		getRankings().then(({ data }) => setRankings(data));
+	}, [debouncedCurrentRound]);
 
 	return (
 		<BasePaper>
